@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block header %}
+<script>
+  function checkValue(){
+    img_src = $('#id_img_src').val();
+    content = $('#id_content').val();
+
+    if (!img_src) {
+      alert('이미지 주소는 입력 필수값 입니다.')
+      return;
+    } else if (!content) {
+      alert('내용은 입력 필수값 입니다.')
+      return;
+    } else {
+      $("form").submit();
+    }
+  }
+
+  function cancle(){
+    location.href='/';
+  }
+</script>
+{% endblock %}
+
+{% block contents %}
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h1>포스트 작성</h1>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    {{ error }}
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    <form method="POST" action="." enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group mt-2">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% if field.field.widget.template_name == 'django/forms/widgets/textarea.html' %}
+        <textarea class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" rows="10"></textarea>
+        {% else %}
+          {% if field.field.widget.input_type == 'file' %}
+        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" accept="image/jpeg,image/png,image/bmp,image/gif"  />
+          {% else %}
+        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
+          placeholder="{{ field.label }}" name="{{ field.name }}"  />
+          {% endif %} 
+        {% endif %}
+      </div>
+      {% if field.errors %}
+      <span style="color: red">{{ field.errors }}</span>
+      {% endif %}
+      {% endfor %}
+    </form>
+    <div class="col-12 mt-2 text-center">
+      <button class="btn btn-primary" onclick="checkValue()">저장</button>
+      <button class="btn btn-primary" onclick="cancle()">취소</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

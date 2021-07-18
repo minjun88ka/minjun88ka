@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block header %}
+<script>
+  function checkValue(){
+    id = $('#id_id').val();
+    email = $('#id_email').val();
+    pwd = $('#id_password').val();
+    re_pwd = $('#id_re_password').val();
+
+    if (!id || !email || !pwd || !re_pwd){
+      alert('모든 값을 입력해야 합니다.');
+      return;
+    } else if (pwd != re_pwd) {
+      alert('비밀번호가 다릅니다.');
+      return;
+    }
+    else {
+      $("form").submit();
+    }
+  }
+</script>
+{% endblock %}
+
+{% block contents %}
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h1>회원가입</h1>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    {{ error }}
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    <form method="POST" action=".">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group mt-2">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
+          placeholder="{{ field.label }}" name="{{ field.name }}" />
+      </div>
+      {% if field.errors %}
+      <span style="color: red">{{ field.errors }}</span>
+      {% endif %}
+      {% endfor %}
+    </form>
+  </div>
+  <div class="col-12 mt-2 text-center">
+    <button class="btn btn-primary" onclick="checkValue()">회원가입</button>
+  </div>
+</div>
+{% endblock %}

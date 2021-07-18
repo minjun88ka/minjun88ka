@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block contents %}
+{% for timeline in timeline_list %}
+<div class="card">
+    <img src="media/{{ timeline.img_src }}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title">{{ timeline.title }}</h5>
+      <p class="card-text">{{ timeline.content }}</p>
+      <p class="card-text">작성자: {{ timeline.dsuser_id }}, 작성일: {{ timeline.create_date }}</p>
+      {% if page_obj.number > 1 %}
+      <a href="post/{{ timeline.id }}?page={{ page_obj.number }}" class="btn btn-primary">상세보기</a>
+      {% else %}
+      <a href="{% url 'detailview' pk=timeline.id %}" class="btn btn-primary">상세보기</a>
+      {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+<div class="row mt-2">
+    <div class="col-12">
+        <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            {% endif %}
+        </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

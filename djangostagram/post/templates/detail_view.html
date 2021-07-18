@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block contents %}
+
+{% for detail in post_detail %}
+<div class="card">
+    <img src="../../media/{{ detail.img_src }}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title">{{ detail.title }}</h5>
+      <p class="card-text">{{ detail.content }}</p>
+      <p class="card-text">{{ tags }}</p>
+      <p class="card-text">작성자: {{ detail.dsuser_id }}, 작성일: {{ detail.create_date }}</p>
+      <a href="/?page={{ page }}" class="btn btn-primary">돌아가기</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
